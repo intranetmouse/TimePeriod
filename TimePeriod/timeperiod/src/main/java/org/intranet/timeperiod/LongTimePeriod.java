@@ -37,4 +37,14 @@ public class LongTimePeriod
 		return (start == otherPeriod.start || start.compareTo(otherPeriod.start) == 0)
 			&& (end == otherPeriod.end || end.compareTo(otherPeriod.end) == 0);
 	}
+
+	@Override
+	public TimePeriod<Long, Long> createPeriod(Long start, Long end)
+	{ return new LongTimePeriod(start, end); }
+
+	@Override
+	public Long add(Long base, Long duration) { return base + duration; }
+
+	@Override
+	public Long subtract(Long base, Long duration) { return base - duration; }
 }

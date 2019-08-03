@@ -5,13 +5,14 @@ import org.junit.Test;
 
 public class TimePeriodTest
 {
+	LongTimePeriod baseTp = new LongTimePeriod(10L, 20L);
+
 	/**
 	* From cases shown on <a href="https://www.codeproject.com/Articles/168662/Time-Period-Library-for-NET">TimePeriod for .NET</a>.
 	*/
 	@Test
 	public void testPeriodRelations()
 	{
-		LongTimePeriod baseTp = new LongTimePeriod(10L, 20L);
 
 		testPeriod(baseTp,  3,  8, false, false, false, false, "after");
 		testPeriod(baseTp,  3, 10, false, false, false, true , "start touching");
@@ -38,5 +39,28 @@ public class TimePeriodTest
 		Assert.assertEquals("Has Inside " + type     , hasInside, baseTp.hasInside(testTp));
 		Assert.assertEquals("Overlaps With " + type  , overlapsWith, baseTp.overlapsWith(testTp));
 		Assert.assertEquals("Intersects With " + type, intersectsWith, baseTp.intersectsWith(testTp));
+	}
+
+	@Test
+	public void testChangeMethods()
+	{
+		assertTimePeriodsEqual(new LongTimePeriod(5L, 20L),
+			baseTp.changeStart(5L));
+
+		assertTimePeriodsEqual(new LongTimePeriod(10L, 29L),
+			baseTp.changeEnd(29L));
+
+		assertTimePeriodsEqual(new LongTimePeriod(10L, 29L),
+			baseTp.changeEnd(29L));
+	}
+
+	private static <T extends Comparable<T>, TS> void assertTimePeriodsEqual(
+		TimePeriod<T, TS> expectedChangeStart,
+		TimePeriod<T, TS> actualChangeStart)
+	{
+		Assert.assertEquals(expectedChangeStart.getStart(),
+			actualChangeStart.getStart());
+		Assert.assertEquals(expectedChangeStart.getEnd(),
+			actualChangeStart.getEnd());
 	}
 }
