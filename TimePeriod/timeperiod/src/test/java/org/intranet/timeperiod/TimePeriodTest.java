@@ -45,22 +45,40 @@ public class TimePeriodTest
 	public void testChangeMethods()
 	{
 		assertTimePeriodsEqual(new LongTimePeriod(5L, 20L),
-			baseTp.changeStart(5L));
+			baseTp.withStart(5L));
 
 		assertTimePeriodsEqual(new LongTimePeriod(10L, 29L),
-			baseTp.changeEnd(29L));
+			baseTp.withEnd(29L));
 
 		assertTimePeriodsEqual(new LongTimePeriod(10L, 29L),
-			baseTp.changeEnd(29L));
+			baseTp.withEnd(29L));
 	}
 
-	private static <T extends Comparable<T>, TS> void assertTimePeriodsEqual(
-		TimePeriod<T, TS> expectedChangeStart,
-		TimePeriod<T, TS> actualChangeStart)
+	private static <T extends Comparable<T>> void assertTimePeriodsEqual(
+		TimePeriod<T, ?> expectedChangeStart,
+		TimePeriod<T, ?> actualChangeStart)
 	{
 		Assert.assertEquals(expectedChangeStart.getStart(),
 			actualChangeStart.getStart());
 		Assert.assertEquals(expectedChangeStart.getEnd(),
 			actualChangeStart.getEnd());
+	}
+
+	@Test
+	public void testReverse()
+	{
+		LongTimePeriod ltp = new LongTimePeriod(5L, 20L);
+		LongTimePeriod ltpRev = new LongTimePeriod(20L, 5L);
+		assertTimePeriodsEqual(ltp, ltpRev);
+		Assert.assertEquals(Long.valueOf(5L), ltpRev.getStart());
+	}
+
+	@Test
+	public void testMove()
+	{
+		LongTimePeriod ltp = new LongTimePeriod(5L, 20L);
+		TimePeriod<Long, Long> moved = ltp.move(11L);
+		LongTimePeriod expected = new LongTimePeriod(16L, 31L);
+		assertTimePeriodsEqual(expected, moved);
 	}
 }

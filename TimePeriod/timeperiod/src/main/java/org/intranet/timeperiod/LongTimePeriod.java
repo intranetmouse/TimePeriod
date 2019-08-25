@@ -19,7 +19,11 @@ public class LongTimePeriod
 		if (start != null && end != null)
 		{
 			if (start > end)
-				throw new IllegalArgumentException();
+			{
+				Long temp = start;
+				start = end;
+				end = temp;
+			}
 			duration = end - start;
 		}
 		else
@@ -39,7 +43,7 @@ public class LongTimePeriod
 	}
 
 	@Override
-	public TimePeriod<Long, Long> createPeriod(Long start, Long end)
+	public LongTimePeriod createPeriod(Long start, Long end)
 	{ return new LongTimePeriod(start, end); }
 
 	@Override
@@ -47,4 +51,5 @@ public class LongTimePeriod
 
 	@Override
 	public Long subtract(Long base, Long duration) { return base - duration; }
+
 }
